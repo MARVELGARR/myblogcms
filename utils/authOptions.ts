@@ -3,9 +3,10 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 
 
-import { Prisma } from "@/prisma/prisma";
+
 import { Adapter } from "next-auth/adapters";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { Prisma } from "@prisma/client";
 
 declare module "next-auth" {
     interface Session {
@@ -34,19 +35,16 @@ export const authOptions: AuthOptions = {
 
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
-            }
-            return token;
-        },
-        async session({ session, token }) {
-            if(session.user){
-
-                session.user.id = token.id as string;
-            }
-            return session;
-        },
+    async session({ session, token }) {
+      return session
+    },
+    async jwt({ token, account }) {
+      return token
+    },
+  },
+    pages: {
+        signIn: "/Auth/login",
+        error: "/Auth/error",
     },
     secret: process.env.NEXT_PUBLIC_SECRET,
     session: {
