@@ -1,4 +1,8 @@
-const Page = () => {
+
+
+const Page = async () => {
+
+
     return (
         <div className=""></div>
     );
