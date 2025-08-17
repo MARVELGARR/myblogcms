@@ -1,10 +1,16 @@
 import { Card } from "@/components/ui/card";
 import { GoogleLoginButton } from "./_LoginComponent/login";
+import { Button } from "@/components/ui/button";
 
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background">
+    <main className="min-h-screen relative flex items-center justify-center bg-background">
+      <Button asChild className="">
+        <a className=" absolute top-10 right-10" href="/Application">
+          Go to application
+        </a>
+      </Button>
       <div className="max-w-md w-full space-y-8 p-8">
         <Card className="px-5 shadow-2xl">
 
