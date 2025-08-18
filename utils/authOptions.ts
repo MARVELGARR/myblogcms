@@ -7,6 +7,7 @@ import GitHubProvider from "next-auth/providers/github";
 import { Adapter } from "next-auth/adapters";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/prisma/prisma";
+import { Role } from "@prisma/client";
 
 
 declare module "next-auth" {
@@ -36,13 +37,40 @@ export const authOptions: AuthOptions = {
 
     ],
     callbacks: {
-        async jwt({ token, account }) {
+        async jwt({ token }) {
+
+          const dbUser = await prisma.user.findUnique({
+            where: {
+              email: token.email as string,
+            },
+          })
+          if(!dbUser){
+            return token
+          }
+
+          return {
+            ...token,
+            id: dbUser.id,
+            name: dbUser.name,
+            email: dbUser.email,
+            image: dbUser.image,
+            role: dbUser.role,
             
-            
-          return token
+          }
         },
     async session({ session, token }) {
-      return session
+      return {
+        ...session,
+        user: {
+          id: token.id as string,
+          name: token.name as string,
+          email: token.email as string,
+          image: token.image as string | undefined,
+          role: token.role as Role | undefined,
+
+          
+        },
+      }
     },
   },
     pages: {
