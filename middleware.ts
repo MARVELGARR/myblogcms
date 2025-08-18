@@ -8,10 +8,10 @@ export async function middleware(request: NextRequest) {
     req: request,
     secret: process.env.NEXT_PUBLIC_SECRET,
   });
-  if (!token) {
-    url.pathname = "Auth/login"; // Change this to your login page
-    return NextResponse.redirect(url);
-  }
+  // if (!token) {
+  //   url.pathname = "Auth/login"; // Change this to your login page
+  //   return NextResponse.redirect(url);
+  // }
 //    const role = token.
   if (request.nextUrl.pathname === url.pathname) {
         return NextResponse.next();
@@ -20,6 +20,6 @@ export async function middleware(request: NextRequest) {
   return NextResponse.redirect(url);
 }
 
-export const config = {
-  matcher: ["/Admin/:path*", "/Application/:path*", "/"],
-};
+// export const config = {
+//   // matcher: ["/Admin/:path*", "/Application/:path*", "/"],
+// };

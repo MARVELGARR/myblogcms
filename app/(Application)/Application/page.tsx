@@ -1,6 +1,10 @@
+import HomePage from "./_AppComponent/home-page";
+
 const Page = () => {
     return (
-        <div className=""></div>
+        <div className="">
+            <HomePage/>
+        </div>
     );
 }
  

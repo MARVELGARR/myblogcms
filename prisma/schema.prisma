@@ -27,6 +27,8 @@ model User {
  role Role? @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Post Post[]
 }
  
 model Account {
@@ -91,4 +93,16 @@ model Authenticator {
 enum Role {
   USER
   ADMIN
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String?
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId])
 }
