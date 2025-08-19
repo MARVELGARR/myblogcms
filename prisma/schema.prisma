@@ -29,6 +29,12 @@ model User {
   updatedAt DateTime @updatedAt
 
   Post Post[]
+
+  
+
+  Comment Comment[]
+
+  Draft Draft[]
 }
  
 model Account {
@@ -99,10 +105,82 @@ model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String?
+  image     String?
+  published Boolean  @default(false)
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  featured Boolean
+  views    Int      @default(0)
+  PostTag PostTag[]
+  @@index([authorId])
+  Comment Comment[]
+  PostReaction PostReaction[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  postId    String   @db.ObjectId
+  authorId  String   @db.ObjectId
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+}
+
+model Draft {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String?
+  image     String?
   authorId  String   @db.ObjectId
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([authorId])
+}
+
+model PostTag {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  postId String @db.ObjectId
+  tagId  String @db.ObjectId
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+   @@unique([postId, tagId])
+   @@index([tagId])
+
+}
+model Tag {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  PostTag PostTag[]
+
+
+  PostReaction PostReaction[]
+}
+
+model PostReaction {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  postId String @db.ObjectId
+  reactionId String @db.ObjectId
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reaction  Tag  @relation(fields: [reactionId], references: [id], onDelete: Cascade)
+}
+
+model Reaction{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  react String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

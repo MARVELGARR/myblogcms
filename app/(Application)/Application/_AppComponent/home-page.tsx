@@ -8,7 +8,7 @@ type MainFeaturedpageProp = {
 const HomePage = ({}:MainFeaturedpageProp) => {
     return (
         <div className="">
-            <Header className=" border-2 rounded"/>
+            <Header className=" "/>
 
         </div>
     );

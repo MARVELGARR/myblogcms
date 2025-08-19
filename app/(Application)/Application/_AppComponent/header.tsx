@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const Header = ({className}: {className?: string}) => {
     return (
-        <div className={cn(className,"w-full flex items-center justify-between")}>
+        <div className={cn(className,"w-full flex items-center justify-between px-5")}>
             <div className="relative h-[6rem] w-[10rem]">
 
                 <Image

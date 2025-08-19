@@ -34,7 +34,7 @@ label, link, className
     const pathname = usePathname()
     return (
         <Button asChild>
-            <Link className={cn(className, pathname == link? "bg-background text-foreground" : "bg-secondary border-0  text-secondary-foreground")} href={link}>
+            <Link className={cn(className, pathname == link? "bg-background text-foreground rounded-xl" : "bg-secondary rounded-xl border-0  text-secondary-foreground")} href={link}>
             {label}</Link>
         </Button>
     );
@@ -44,10 +44,10 @@ label, link, className
 export function Navigation(){
 
     return (
-        <div className="flex gap-2 p-2 bg-secondary border-2 rounded">
+        <div className="flex gap-2 p-1 bg-secondary border-2 rounded-xl">
             {navItems.map((item)=>{
                 return (
-                    <NavBarItem className="" label={item.label}  link={item.link}/>
+                    <NavBarItem key={item.link} className="" label={item.label}  link={item.link}/>
                 )
             })}
         </div>
