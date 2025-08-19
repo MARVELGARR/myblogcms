@@ -17,8 +17,8 @@ const Header = ({className}: {className?: string}) => {
 
             <Navigation/>
 
-            <Button className="">
-                <a href=""> subscribe</a>
+            <Button asChild className="">
+                <a href="#"> subscribe</a>
             </Button>
         </div>
     );
