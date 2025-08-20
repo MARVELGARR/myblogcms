@@ -8,19 +8,20 @@ import { EditorKit } from "@/components/editor-kit";
 import { SettingsDialog } from "@/components/settings-dialog";
 import { Editor, EditorContainer } from "@/components/ui/editor";
 import { Button } from "./ui/button";
+import { usePostStore } from "@/zustand/post-store";
 
 export function PlateEditor() {
   const [value, setValue] = React.useState<any>([]);
+
+  const setMarkdown= usePostStore((state)=> state.setMarkdown)
   const editor = usePlateEditor({
     plugins: EditorKit,
     value: value,
   });
 
   const markdown = editor.api.markdown.serialize();
-  const handleSubmit = () => {
-    alert(markdown)
+  setMarkdown(markdown)
 
-  };
 
   return (
     <div className="">
@@ -31,10 +32,7 @@ export function PlateEditor() {
         <SettingsDialog />
       </Plate>
 
-      <button className="cursor-pointer" onClick={handleSubmit}>
-        
-        submit
-      </button>
+     
     </div>
   );
 }

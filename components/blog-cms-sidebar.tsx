@@ -171,31 +171,22 @@ export function BlogCMSSidebar() {
         />
 
         <SidebarItem
+          
           icon={<MessageSquare className="h-4 w-4" />}
           label="Comments"
           href="/Admin/comments"
           isActive={pathName.includes("/comments")}
         />
-{/* 
+
         <SidebarItem
-          icon={<BarChart3 className="h-4 w-4" />}
-          label="Analytics"
-          hasSubmenu
-          isExpanded={expandedMenus.includes("analytics")}
+          icon={<Plus className="h-4 w-4" />}
+          label="Category"
+          href="/Admin/category"
+          isActive={pathName.includes("/Admin/category")}
+          isExpanded={expandedMenus.includes("/category")}
         >
-          <SubMenuItem
-            icon={<BarChart3 className="h-3 w-3" />}
-            label="Overview"
-            href="/analytics"
-            isActive={pathName === "/analytics"}
-          />
-          <SubMenuItem
-            icon={<Eye className="h-3 w-3" />}
-            label="Page Views"
-            href="/analytics/page-views"
-            isActive={pathName === "/analytics/page-views"}
-          />
-        </SidebarItem> */}
+
+        </SidebarItem>
 
         <SidebarItem
           icon={<Users className="h-4 w-4" />}
