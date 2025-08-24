@@ -1,11 +1,11 @@
 import Header from "./header";
 
-type MainFeaturedpageProp = {
-    blog?: any
-}
+// type MainFeaturedpageProp = {
+//     blog?:stany
+// }
 
 
-const HomePage = ({}:MainFeaturedpageProp) => {
+const HomePage = () => {
     return (
         <div className="">
             <Header className=" "/>

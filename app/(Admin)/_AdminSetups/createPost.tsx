@@ -3,7 +3,7 @@ import { FileUploader } from "@/components/custom/fileUploader"
 import { PostMetadataForm } from "@/components/custom/post-metadata-form"
 import { PostSummary } from "@/components/custom/post-summary"
 import { PlateEditor } from "@/components/plate-editor"
-import React, { Children } from "react"
+import React from "react"
 
 export default  function CreatePost() {
 

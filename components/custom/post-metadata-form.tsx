@@ -15,8 +15,9 @@ interface PostMetadataFormProps {
 }
 
 export function PostMetadataForm({ className }: PostMetadataFormProps) {
-  const { tags, category, featured, setTags, setCategory, setFeatured, addTag, removeTag } = usePostStore()
+  const { tags, category, featured, setCategory, setFeatured, addTag, removeTag } = usePostStore()
   const [tagInput, setTagInput] = React.useState("")
+
 
   const handleAddTag = () => {
     const trimmedTag = tagInput.trim()

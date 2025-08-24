@@ -8,7 +8,7 @@ import { X, FileIcon, ImageIcon, VideoIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/utils/uploadthings"
 import { Button } from "../ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card"
+import { Card, CardContent } from "../ui/card"
 import { usePostStore } from "@/zustand/post-store"
 
 

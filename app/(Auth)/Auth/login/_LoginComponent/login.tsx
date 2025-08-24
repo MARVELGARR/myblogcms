@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { signIn, signOut, useSession } from "next-auth/react"
+import Image from "next/image"
 
 export function GoogleLoginButton() {
   const { data: session, status } = useSession()
@@ -21,7 +22,7 @@ export function GoogleLoginButton() {
           <p className="text-sm text-muted-foreground">Signed in as</p>
           <p className="font-medium">{session.user?.email}</p>
           {session.user?.image && (
-            <img
+            <Image
               src={session.user.image || "/placeholder.svg"}
               alt="Profile"
               className="w-12 h-12 rounded-full mx-auto mt-2"

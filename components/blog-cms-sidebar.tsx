@@ -6,7 +6,7 @@ import {
   FileText,
   ImageIcon,
   MessageSquare,
-  BarChart3,
+
   Users,
   Settings,
   ChevronDown,

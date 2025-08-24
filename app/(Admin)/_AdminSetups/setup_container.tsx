@@ -3,7 +3,7 @@ import { useAdminRoute } from "@/actions/admin-router";
 import CreatePost from "./createPost";
 
 
-export default async function  AdminHome() {
+export default  function  AdminHome() {
 
 
     const routeKey = useAdminRoute();
@@ -14,7 +14,7 @@ export default async function  AdminHome() {
       return <div>Dashboard Component</div>;
     case "allPosts":
       return (
-        <></>
+        <>Me</>
       );
     case "newPost":
       return <CreatePost/>;
