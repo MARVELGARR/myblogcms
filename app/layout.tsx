@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Session_Provider from "@/providers/session-providers";
 import QueryProvider from "@/providers/query-provider";

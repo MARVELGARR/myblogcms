@@ -16,7 +16,7 @@ interface PostMetadataFormProps {
 }
 
 export function PostMetadataForm({ className }: PostMetadataFormProps) {
-  const { tags, category, title, description, setTittle, setDescription, featured, setCategory, setFeatured, addTag, removeTag } = usePostStore()
+  const { tags, title, description, setTittle, setDescription, featured, setCategory, setFeatured, addTag, removeTag } = usePostStore()
   const [tagInput, setTagInput] = React.useState("")
 
 
@@ -47,10 +47,6 @@ export function PostMetadataForm({ className }: PostMetadataFormProps) {
     setDescription(e.target.value)
   }
 
-
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value)
-  }
 
   const handleFeaturedToggle = (checked: boolean) => {
     setFeatured(checked)

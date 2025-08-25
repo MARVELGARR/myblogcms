@@ -30,8 +30,6 @@ interface FileUploaderProps {
 
 export function FileUploader({
   endpoint,
-  title = "Upload Files",
-  description = "Drag and drop files here or click to browse",
   maxFiles = 4,
   onUploadComplete,
   className,

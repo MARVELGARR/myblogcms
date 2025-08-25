@@ -1,16 +1,10 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
 import { usePostStore } from "@/zustand/post-store"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { useGetCategory } from "@/app/(Admin)/_AdminHooks/_AminCategoryHooks/useGetCategory"
 
-async function fetchCategories() {
-  const res = await fetch("/api/category")
-  const data = await res.json()
-  if (!data.success) throw new Error(data.error || "Failed to fetch categories")
-  return data.categories as Array<{ id: string; name: string }>
-}
+
 
 export function CategorySelect() {
   const { category, setCategory } = usePostStore()

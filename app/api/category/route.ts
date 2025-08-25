@@ -7,7 +7,7 @@ export async function GET() {
     const categories = await prisma.category.findMany();
     return NextResponse.json({ success: true, categories });
   } catch (error) {
-    return NextResponse.json({ success: false, error: "Failed to fetch categories" }, { status: 500 });
+    return NextResponse.json({ success: false, error: `Failed to fetch categories: ${error} `  }, { status: 500 });
   }
 }
 
@@ -23,6 +23,6 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json({ success: true, category });
   } catch (error) {
-    return NextResponse.json({ success: false, error: "Failed to create category" }, { status: 500 });
+    return NextResponse.json({ success: false, error: `Failed to create category ${error}` }, { status: 500 });
   }
 }

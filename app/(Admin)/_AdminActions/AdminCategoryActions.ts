@@ -1,5 +1,3 @@
-import { Category } from "@prisma/client";
-
 
 //Get Categories
 type GetCategoryProp ={

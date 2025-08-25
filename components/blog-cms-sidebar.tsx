@@ -19,7 +19,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
 interface SidebarItemProps {
   icon: React.ReactNode
@@ -105,12 +105,7 @@ export function BlogCMSSidebar() {
   
   const expandedMenus = ["posts", "pages", "analytics", "users", "settings"]
 
-  const handdleIsExpanded = (param: string) =>{
-    if(pathName.includes(param)){
-      return false
-    }
-    return true
-  }
+
   
 
   return (

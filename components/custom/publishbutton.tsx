@@ -5,12 +5,11 @@ import { useMutation } from "@tanstack/react-query"
 
 import { usePostStore } from "@/zustand/post-store"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import { submitData } from "@/app/(Admin)/_AdminActions/AdminPostActions"
 
 export function PublishButton() {
   const { tags, title, description, category, featured, markdown, uploadedFiles } = usePostStore()
-  const router = useRouter()
+
   const {data: session} = useSession()
   // Prepare post data
   const postData = {
