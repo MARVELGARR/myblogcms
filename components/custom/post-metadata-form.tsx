@@ -8,6 +8,7 @@ import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
 import { Switch } from "../ui/switch"
 import { usePostStore } from "@/zustand/post-store"
+import { CategorySelect } from "./categorySelector"
 
 
 interface PostMetadataFormProps {
@@ -15,7 +16,7 @@ interface PostMetadataFormProps {
 }
 
 export function PostMetadataForm({ className }: PostMetadataFormProps) {
-  const { tags, category, featured, setCategory, setFeatured, addTag, removeTag } = usePostStore()
+  const { tags, category, title, description, setTittle, setDescription, featured, setCategory, setFeatured, addTag, removeTag } = usePostStore()
   const [tagInput, setTagInput] = React.useState("")
 
 
@@ -38,6 +39,15 @@ export function PostMetadataForm({ className }: PostMetadataFormProps) {
     }
   }
 
+  
+  const handleTittleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTittle(e.target.value)
+  }
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value)
+  }
+
+
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value)
   }
@@ -48,20 +58,38 @@ export function PostMetadataForm({ className }: PostMetadataFormProps) {
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Category Section */}
+      <div className=""></div>
+      {/* Tittle Section */}
       <div className="space-y-2">
-        <label htmlFor="category" className="text-sm font-medium text-foreground">
-          Category
+        <label htmlFor="tittle" className="text-sm font-medium text-foreground">
+          Tittle
         </label>
         <Input
-          id="category"
+          id="tittle"
           type="text"
-          placeholder="Enter post category"
-          value={category}
-          onChange={handleCategoryChange}
+          placeholder="Enter post Tittle"
+          value={title}
+          onChange={handleTittleChange}
           className="w-full"
         />
       </div>
+
+      {/* Description Section */}
+      <div className="space-y-2">
+        <label htmlFor="description" className="text-sm font-medium text-foreground">
+          Description
+        </label>
+        <Input
+          id="description"
+          type="text"
+          placeholder="Enter post Tittle"
+          value={description}
+          onChange={handleDescriptionChange}
+          className="w-full"
+        />
+      </div>
+      {/* Category Section */}
+      <CategorySelect/>
 
       {/* Tags Section */}
       <div className="space-y-2">

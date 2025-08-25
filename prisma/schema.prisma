@@ -104,6 +104,7 @@ enum Role {
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
+  description String
   content   String?
   image     String?
   authorId  String   @db.ObjectId
@@ -126,9 +127,7 @@ model Category {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   @unique
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  
+  updatedAt DateTime @updatedAt 
 
   Post Post[]
 }

@@ -7,27 +7,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
-import { useMutation } from "@tanstack/react-query"
-import { submitData } from "@/app/(Admin)/_AdminActions/AdminSeverActions"
+import { PublishButton } from "./publishbutton"
 
-type SubmitPostData = {
-  title: string;
-  content: string;
-  image?: string;
-  featured: boolean;
-  categoryId: string;
-  authorId: string;
-  tags: string[]; // array of tag names or IDs
-}
+
 
 export function PostSummary({className}: {className?: string}) {
-  const { tags, title, description, category, featured, markdown,  uploadedFiles, resetPost } = usePostStore()
+  const { tags,  category, featured, markdown,  uploadedFiles, resetPost } = usePostStore()
 
-  const data = {title, description, content: markdown, image: uploadedFiles[0].url, featured, tags, category}
-  
-  const result = useMutation({
-    mutationFn: ()=> submitData({...data}) 
-  })
+
   const wordCount = markdown
     .trim()
     .split(/\s+/)
@@ -94,7 +81,7 @@ export function PostSummary({className}: {className?: string}) {
               <div>Uploaded files: {uploadedFiles.length}</div>
             </div>
           </div>
-          <Button>Publish</Button>
+          <PublishButton/>
         </div>
       </CardContent>
     </Card>

@@ -5,6 +5,8 @@ interface PostState {
   // Post metadata
   tags: string[]
   category: string
+  title: string
+  description: string
   featured: boolean
 
   // Content
@@ -23,6 +25,8 @@ interface PostState {
   addTag: (tag: string) => void
   removeTag: (tag: string) => void
   setCategory: (category: string) => void
+  setTittle: (title: string) => void
+  setDescription: (description: string) => void
   setFeatured: (featured: boolean) => void
   setMarkdown: (markdown: string) => void
   setUploadedFiles: (files: Array<{ url: string; name: string; size: number; type: string }>) => void
@@ -35,6 +39,8 @@ interface PostState {
 const initialState = {
   tags: [],
   category: "",
+  tittle: "",
+  description: "",
   featured: false,
   markdown: "",
   uploadedFiles: [],
@@ -60,6 +66,12 @@ export const usePostStore = create<PostState>()(
 
       // Category action
       setCategory: (category) => set({ category }, false, "setCategory"),
+
+      //tittle action
+      setTittle: (title) => set({ title }, false, "setTittle"),
+      
+      //description action
+      setDescription: (description) => set({ description }, false, "setDescription"),
 
       // Featured action
       setFeatured: (featured) => set({ featured }, false, "setFeatured"),
