@@ -1,3 +1,5 @@
+import { prisma } from "@/prisma/prisma";
+import { Category } from "@prisma/client";
 
 //Get Categories
 type GetCategoryProp ={
@@ -14,11 +16,45 @@ export const getCategories = async (): Promise<GetCategoryProp> => {
 };
 
 
-// //Create Category
-// type CreateCategoryProps = {
 
-// }
 
-// export const createNewCategory = async ({}: Category) =>{
+export const createNewCategory = async (name: string) =>{
 
-// }
+  try{
+
+    const res = await fetch(`/api/category`, {
+      method: "POST",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify(name)
+    })
+  
+    const data = await res.json();
+
+      
+    return data ; 
+  }
+  catch(error){
+    throw new Error(`${error}`);
+  }
+
+}
+export const updateCategory = async (id: string, name: string) =>{
+
+  try{
+
+    const res = await fetch(`/api/category/${id}`, {
+      method: "PATCH",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({id, name})
+    })
+  
+    const data = await res.json();
+
+      
+    return data ; 
+  }
+  catch(error){
+    throw new Error(`${error}`);
+  }
+
+}

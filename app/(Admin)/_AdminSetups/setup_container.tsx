@@ -1,6 +1,7 @@
 "use client"
 import { useAdminRoute } from "@/actions/admin-router";
 import CreatePost from "./createPost";
+import CategoryPage from "@/components/category_component/category_page";
 
 
 export default  function  AdminHome() {
@@ -25,7 +26,7 @@ export default  function  AdminHome() {
     case "comments":
       return <div>Comments Component</div>;
     case "category":
-      return <div>Category Component</div>;
+      return <div><CategoryPage/></div>;
     case "users":
       return <div>Users Component</div>;
     case "profileSettings":

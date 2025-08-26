@@ -5,6 +5,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Pencil, Trash2, Check, X } from "lucide-react"
+import { formatDate } from "@/utils/date"
+import useUpdateCategory from "@/app/(Admin)/_AdminHooks/_AminCategoryHooks/useUpdateCategory"
+import { toast } from "sonner"
+import Link from "next/link"
 
 interface Category {
   id: string
@@ -15,13 +19,22 @@ interface Category {
 
 interface CategoryCardProps {
   category: Category
-  onEdit?: (id: string, newName: string) => void
-  onDelete?: (id: string) => void
+
 }
 
-export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
+export function CategoryCard({ category,  }: CategoryCardProps) {
+  
   const [isEditing, setIsEditing] = useState(false)
   const [editName, setEditName] = useState(category.name)
+  const {updateCategoryFn,} = useUpdateCategory()
+
+  const onEdit = async(categoryId: string, name: string) =>{
+    updateCategoryFn({id:categoryId, name}).then(()=>{
+      toast("category edited")
+    })
+  }
+
+
 
   const handleSave = () => {
     if (editName.trim() && editName !== category.name) {
@@ -35,14 +48,10 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
     setIsEditing(false)
   }
 
-  const handleDelete = () => {
-    if (confirm(`Are you sure you want to delete "${category.name}"?`)) {
-      onDelete?.(category.id)
-    }
-  }
+
 
   return (
-    <Card className="w-full">
+    <Card className="w-fit ">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           {isEditing ? (
@@ -74,10 +83,13 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={handleDelete}
+                 
                   className="text-destructive hover:text-destructive bg-transparent"
+                  asChild
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Link href={`/api/category/${category.id}`}>
+                    <Trash2 className="h-4 w-4" />
+                  </Link>
                 </Button>
               </div>
             </>
@@ -86,8 +98,8 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
       </CardHeader>
       <CardContent>
         <div className="text-sm text-muted-foreground space-y-1">
-          <p>Created: {category.createdAt.toLocaleDateString()}</p>
-          <p>Updated: {category.updatedAt.toLocaleDateString()}</p>
+          <p>Created: {formatDate(category.createdAt)}</p>
+          <p>Updated: {formatDate(category.updatedAt)}</p>
         </div>
       </CardContent>
     </Card>
