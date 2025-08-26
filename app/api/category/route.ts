@@ -14,7 +14,7 @@ export async function GET() {
 // Create a new category
 export async function POST(request: NextRequest) {
   try {
-    const { name } = await request.json();
+    const  name  = await request.json();
     if (!name) {
       return NextResponse.json({ success: false, error: "Category name is required" }, { status: 400 });
     }

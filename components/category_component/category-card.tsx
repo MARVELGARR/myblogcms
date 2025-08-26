@@ -89,10 +89,11 @@ export function CategoryCard({ category,  }: CategoryCardProps) {
                   variant="outline"
                   onClick={()=>onOpen("Delete-Category", category.id)}
                   className="text-destructive hover:text-destructive bg-transparent"
-                  asChild
+                  
                 >
                   
                     <Trash2 className="h-4 w-4 " />
+                    
                   
                 </Button>
               </div>
