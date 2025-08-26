@@ -9,6 +9,7 @@ import { formatDate } from "@/utils/date"
 import useUpdateCategory from "@/app/(Admin)/_AdminHooks/_AminCategoryHooks/useUpdateCategory"
 import { toast } from "sonner"
 import Link from "next/link"
+import { useAlertStore } from "@/zustand/alert-store"
 
 interface Category {
   id: string
@@ -28,6 +29,8 @@ export function CategoryCard({ category,  }: CategoryCardProps) {
   const [editName, setEditName] = useState(category.name)
   const {updateCategoryFn,} = useUpdateCategory()
 
+  const { onOpen, data} = useAlertStore()
+
   const onEdit = async(categoryId: string, name: string) =>{
     updateCategoryFn({id:categoryId, name}).then(()=>{
       toast("category edited")
@@ -40,6 +43,7 @@ export function CategoryCard({ category,  }: CategoryCardProps) {
     if (editName.trim() && editName !== category.name) {
       onEdit?.(category.id, editName.trim())
     }
+    setEditName("")
     setIsEditing(false)
   }
 
@@ -83,13 +87,13 @@ export function CategoryCard({ category,  }: CategoryCardProps) {
                 <Button
                   size="sm"
                   variant="outline"
-                 
+                  onClick={()=>onOpen("Delete-Category", category.id)}
                   className="text-destructive hover:text-destructive bg-transparent"
                   asChild
                 >
-                  <Link href={`/api/category/${category.id}`}>
-                    <Trash2 className="h-4 w-4" />
-                  </Link>
+                  
+                    <Trash2 className="h-4 w-4 " />
+                  
                 </Button>
               </div>
             </>
