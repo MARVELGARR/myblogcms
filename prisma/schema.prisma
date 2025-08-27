@@ -104,6 +104,7 @@ enum Role {
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
+  description String
   content   String?
   image     String?
   authorId  String   @db.ObjectId
@@ -112,7 +113,7 @@ model Post {
   updatedAt DateTime @updatedAt
   published Boolean  @default(false)
   featured Boolean
-  PostTag PostTag[]
+  tag String[]
   views    Int      @default(0)
   @@index([authorId])
   Comment Comment[]
@@ -126,9 +127,7 @@ model Category {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   @unique
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  
+  updatedAt DateTime @updatedAt 
 
   Post Post[]
 }
@@ -158,29 +157,6 @@ model Draft {
   @@index([authorId])
 }
 
-model PostTag {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  postId String @db.ObjectId
-  tagId  String @db.ObjectId
-
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-   @@unique([postId, tagId])
-   @@index([tagId])
-
-}
-model Tag {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  PostTag PostTag[]
-
-
-  PostReaction PostReaction[]
-}
 
 model PostReaction {
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -188,7 +164,6 @@ model PostReaction {
   reactionId String @db.ObjectId
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  reaction  Tag  @relation(fields: [reactionId], references: [id], onDelete: Cascade)
 }
 
 model Reaction{

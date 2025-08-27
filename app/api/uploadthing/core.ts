@@ -18,7 +18,8 @@ export const ourFileRouter = {
       maxFileCount: 1,
     },
   })
-  
+
+
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
@@ -39,6 +40,23 @@ export const ourFileRouter = {
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
     }),
+
+      editorUploader: f(["image", "text", "blob", "pdf", "video", "audio"])
+    .middleware(async ({ req }) => {
+      // Optional: Add authentication here if needed
+      return {};
+    })
+    .onUploadComplete(async ({ file }) => {
+      console.log("Editor upload complete:", file);
+      return {
+        key: file.key,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        url: file.ufsUrl,
+      };
+    }),
+    
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

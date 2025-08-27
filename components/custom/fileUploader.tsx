@@ -8,7 +8,8 @@ import { X, FileIcon, ImageIcon, VideoIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/utils/uploadthings"
 import { Button } from "../ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card"
+import { Card, CardContent } from "../ui/card"
+import { usePostStore } from "@/zustand/post-store"
 
 
 interface UploadedFile {
@@ -29,14 +30,13 @@ interface FileUploaderProps {
 
 export function FileUploader({
   endpoint,
-  title = "Upload Files",
-  description = "Drag and drop files here or click to browse",
   maxFiles = 4,
   onUploadComplete,
   className,
 }: FileUploaderProps) {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
+   const setUploadedFilesUrl = usePostStore((state) => state.setUploadedFiles);
 
   const handleUploadComplete = (res: any) => {
     const newFiles = res.map((file: any) => ({
@@ -47,6 +47,7 @@ export function FileUploader({
     }))
 
     setUploadedFiles((prev) => [...prev, ...newFiles])
+    setUploadedFilesUrl(newFiles)
     setIsUploading(false)
     onUploadComplete?.(newFiles)
   }
@@ -70,15 +71,13 @@ export function FileUploader({
   }
 
   return (
-    <Card className={cn("w-full max-w-2xl", className)}>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <Card className={cn("w-full p-0 max-w-2xl", className)}>
+     
+      <CardContent className="space-y-2 p-1">
         {uploadedFiles.length < maxFiles && (
           <UploadDropzone
-            endpoint={endpoint}
+          
+            endpoint={endpoint="imageUploader"}
             onClientUploadComplete={handleUploadComplete}
             onUploadError={(error: Error) => {
               console.error("Upload error:", error)
@@ -87,7 +86,7 @@ export function FileUploader({
             onUploadBegin={() => {
               setIsUploading(true)
             }}
-            className="ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-label:text-primary ut-allowed-content:ut-uploading:text-red-300"
+            className=" h-[14rem] ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-label:text-primary ut-allowed-content:ut-uploading:text-red-300"
           />
         )}
 
