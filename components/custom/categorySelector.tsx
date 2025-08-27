@@ -18,15 +18,16 @@ export function CategorySelect() {
         Category
       </label>
       <Select
-        value={category}
+        value={category || 'loading'}
         onValueChange={setCategory}
+        
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder={isLoading ? "Loading..." : "Select category"} />
+          <SelectValue defaultValue={'loading...'} placeholder={isLoading ? "Loading..." : "Select category"} />
         </SelectTrigger>
         <SelectContent>
            {isLoading && (
-    <SelectItem value="loading" disabled>
+    <SelectItem  value="loading" disabled>
       Loading...
     </SelectItem>
   )}
@@ -40,8 +41,7 @@ export function CategorySelect() {
                 <SelectItem key={cat.id} value={cat.id}>
                   {cat.name}
                 </SelectItem>
-              ))
-            : !isLoading && <SelectItem value="" disabled>No categories found</SelectItem>
+              ))            : !isLoading && <SelectItem value="none" disabled>No categories found</SelectItem>
           }
         </SelectContent>
       </Select>

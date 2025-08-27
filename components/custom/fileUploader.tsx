@@ -77,7 +77,7 @@ export function FileUploader({
         {uploadedFiles.length < maxFiles && (
           <UploadDropzone
           
-            endpoint={endpoint}
+            endpoint={endpoint="imageUploader"}
             onClientUploadComplete={handleUploadComplete}
             onUploadError={(error: Error) => {
               console.error("Upload error:", error)

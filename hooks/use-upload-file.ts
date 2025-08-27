@@ -1,14 +1,15 @@
 import * as React from 'react';
-
-import type { OurFileRouter } from '@/lib/uploadthing';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import type {
   ClientUploadedFileData,
   UploadFilesOptions,
 } from 'uploadthing/types';
-
 import { generateReactHelpers } from '@uploadthing/react';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import { OurFileRouter } from '@/app/api/uploadthing/core';
+
+export const { uploadFiles, useUploadThing } =
+  generateReactHelpers<OurFileRouter>();
 
 export type UploadedFile<T = unknown> = ClientUploadedFileData<T>;
 
@@ -45,48 +46,37 @@ export function useUploadFile({
       });
 
       setUploadedFile(res[0]);
-
       onUploadComplete?.(res[0]);
 
-      return uploadedFile;
+      return res[0];
     } catch (error) {
       const errorMessage = getErrorMessage(error);
-
-      const message =
-        errorMessage.length > 0
-          ? errorMessage
-          : 'Something went wrong, please try again later.';
-
-      toast.error(message);
-
+      toast.error(errorMessage || 'Something went wrong, please try again later.');
       onUploadError?.(error);
 
-      // Mock upload for unauthenticated users
-      // toast.info('User not logged in. Mocking upload process.');
-      const mockUploadedFile = {
+      // Mock fallback
+      const mockUploadedFile: UploadedFile = {
         key: 'mock-key-0',
         appUrl: `https://mock-app-url.com/${file.name}`,
         name: file.name,
         size: file.size,
         type: file.type,
         url: URL.createObjectURL(file),
-      } as UploadedFile;
-
-      // Simulate upload progress
-      let progress = 0;
-
-      const simulateProgress = async () => {
-        while (progress < 100) {
-          await new Promise((resolve) => setTimeout(resolve, 50));
-          progress += 2;
-          setProgress(Math.min(progress, 100));
-        }
+        serverData: undefined,
+        customId: null,
+        ufsUrl: '',
+        fileHash: ''
       };
 
-      await simulateProgress();
+      // Simulate progress for mock
+      let progressValue = 0;
+      while (progressValue < 100) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        progressValue += 2;
+        setProgress(Math.min(progressValue, 100));
+      }
 
       setUploadedFile(mockUploadedFile);
-
       return mockUploadedFile;
     } finally {
       setProgress(0);
@@ -104,27 +94,15 @@ export function useUploadFile({
   };
 }
 
-export const { uploadFiles, useUploadThing } =
-  generateReactHelpers<OurFileRouter>();
-
 export function getErrorMessage(err: unknown) {
-  const unknownError = 'Something went wrong, please try again later.';
-
   if (err instanceof z.ZodError) {
-    const errors = err.issues.map((issue) => {
-      return issue.message;
-    });
-
-    return errors.join('\n');
+    return err.issues.map((issue) => issue.message).join('\n');
   } else if (err instanceof Error) {
     return err.message;
-  } else {
-    return unknownError;
   }
+  return 'Something went wrong, please try again later.';
 }
 
 export function showErrorToast(err: unknown) {
-  const errorMessage = getErrorMessage(err);
-
-  return toast.error(errorMessage);
+  toast.error(getErrorMessage(err));
 }
