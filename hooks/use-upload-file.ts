@@ -54,30 +54,30 @@ export function useUploadFile({
       toast.error(errorMessage || 'Something went wrong, please try again later.');
       onUploadError?.(error);
 
-      // Mock fallback
-      const mockUploadedFile: UploadedFile = {
-        key: 'mock-key-0',
-        appUrl: `https://mock-app-url.com/${file.name}`,
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        url: URL.createObjectURL(file),
-        serverData: undefined,
-        customId: null,
-        ufsUrl: '',
-        fileHash: ''
-      };
+      // // Mock fallback
+      // const mockUploadedFile: UploadedFile = {
+      //   key: 'mock-key-0',
+      //   appUrl: `https://mock-app-url.com/${file.name}`,
+      //   name: file.name,
+      //   size: file.size,
+      //   type: file.type,
+      //   url: URL.createObjectURL(file),
+      //   serverData: undefined,
+      //   customId: null,
+      //   ufsUrl: '',
+      //   fileHash: ''
+      // };
 
-      // Simulate progress for mock
-      let progressValue = 0;
-      while (progressValue < 100) {
-        await new Promise((resolve) => setTimeout(resolve, 50));
-        progressValue += 2;
-        setProgress(Math.min(progressValue, 100));
-      }
+      // // Simulate progress for mock
+      // let progressValue = 0;
+      // while (progressValue < 100) {
+      //   await new Promise((resolve) => setTimeout(resolve, 50));
+      //   progressValue += 2;
+      //   setProgress(Math.min(progressValue, 100));
+      // }
 
-      setUploadedFile(mockUploadedFile);
-      return mockUploadedFile;
+      // setUploadedFile(mockUploadedFile);
+      // return mockUploadedFile;
     } finally {
       setProgress(0);
       setIsUploading(false);
