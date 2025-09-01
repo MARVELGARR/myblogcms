@@ -6,7 +6,7 @@ export function useGetCategory() {
     queryKey: ["categories"],
     queryFn: () => getCategories(),
     select(data) {
-        return data.categories;
+        return data;
     },
   });
 }

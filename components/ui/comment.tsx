@@ -145,6 +145,7 @@ export function Comment(props: {
 
   const onCancel = () => {
     setEditingId(null);
+    // @ts-ignore
     commentEditor.tf.replaceNodes(initialValue, {
       at: [],
       children: true,
@@ -154,6 +155,7 @@ export function Comment(props: {
   const onSave = () => {
     void updateComment({
       id: comment.id,
+      // @ts-ignore
       contentRich: commentEditor.children,
       discussionId: comment.discussionId,
       isEdited: true,
@@ -211,6 +213,7 @@ export function Comment(props: {
             <CommentMoreDropdown
               onCloseAutoFocus={() => {
                 setTimeout(() => {
+                  // @ts-ignore
                   commentEditor.tf.focus({ edge: 'endEditor' });
                 }, 0);
               }}
@@ -435,12 +438,14 @@ export function CommentCreateForm({
 
   React.useEffect(() => {
     if (commentEditor && focusOnMount) {
+      // @ts-ignore
       commentEditor.tf.focus();
     }
   }, [commentEditor, focusOnMount]);
 
   const onAddComment = React.useCallback(async () => {
     if (!commentValue) return;
+    // @ts-ignore
 
     commentEditor.tf.reset();
 
@@ -545,6 +550,7 @@ export function CommentCreateForm({
       );
       editor.tf.unsetNodes([getDraftCommentKey()], { at: path });
     });
+    // @ts-ignore
   }, [commentValue, commentEditor.tf, discussionId, editor, discussions]);
 
   return (
@@ -560,6 +566,7 @@ export function CommentCreateForm({
       <div className="relative flex grow gap-2">
         <Plate
           onChange={({ value }) => {
+            // @ts-ignore
             setCommentValue(value);
           }}
           editor={commentEditor}

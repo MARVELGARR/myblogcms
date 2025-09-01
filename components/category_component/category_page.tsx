@@ -1,20 +1,17 @@
-'use client'
-import { useGetCategory } from "@/app/(Admin)/_AdminHooks/_AminCategoryHooks/useGetCategory";
 import { CategoryCard } from "./category-card";
 import CreateNewCategoryButton from "./create-new-category-button";
+import { GetCategoryProp } from "@/app/(Admin)/_AdminActions/AdminCategoryActions";
 
 
 
-const CategoryPage =  () => {
+const CategoryPage =  ({categories}:{categories: GetCategoryProp["categories"]}) => {
 
-
-    const { data} = useGetCategory()
 
 
     
     return (
         <div className="relative">
-            <div className="">{data?.map((category)=>{
+            <div className="">{categories?.map((category)=>{
                 
                 return (
                     <CategoryCard key={category.id} category={category}/>

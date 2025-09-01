@@ -17,9 +17,10 @@ export function PlateEditor() {
     plugins: EditorKit,
     value: value,
   });
-
-  const markdown = editor.api.markdown.serialize();
-  setMarkdown(markdown)
+  
+// @ts-ignore
+const markdown =  editor.api.markdown.serialize() ?? "";
+  setMarkdown(markdown);
 
 
   return (

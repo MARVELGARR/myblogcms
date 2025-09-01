@@ -133,7 +133,7 @@ export function BlogCMSSidebar() {
         <SidebarItem
           icon={<FileText className="h-4 w-4" />}
           label="Posts"
-          href={`/Admin/posts?subPost=allPost`}
+          href={`/Admin/posts`}
           hasSubmenu
           isActive={pathName.includes("/posts")}
           isExpanded={pathName.includes("/posts") }
@@ -141,37 +141,37 @@ export function BlogCMSSidebar() {
           <SubMenuItem
             icon={<Eye className="h-3 w-3" />}
             label="All Posts"
-            href="/Admin/posts?subPost=allPost"
-            isActive={urlParams.get("subPost") == "allPost"}
+            href="/Admin/posts"
+            isActive={pathName === '/Admin/posts'}
           />
           <SubMenuItem
             icon={<Plus className="h-3 w-3" />}
             label="Add New"
-            href="/Admin/posts?subPost=new"
-            isActive={urlParams.get("subPost") == "new"}
+            href="/Admin/posts/newpost"
+            isActive={pathName == "/Admin/posts/newpost"}
           />
           <SubMenuItem
             icon={<Edit className="h-3 w-3" />}
             label="Drafts"
-            href="/Admin/posts/?subPost=drafts"
+            href="/Admin/posts/drafts"
             isActive={urlParams.get("subPost") == "drafts"}
           />
         </SidebarItem>
-
+{/* 
         <SidebarItem
           icon={<ImageIcon className="h-4 w-4" />}
           label="Media"
           href="/Admin/media"
           isActive={pathName.includes("/media")}
-        />
+        /> */}
 
-        <SidebarItem
+        {/* <SidebarItem
           
           icon={<MessageSquare className="h-4 w-4" />}
           label="Comments"
           href="/Admin/comments"
           isActive={pathName.includes("/comments")}
-        />
+        /> */}
 
         <SidebarItem
           icon={<Plus className="h-4 w-4" />}
@@ -196,18 +196,13 @@ export function BlogCMSSidebar() {
         <SidebarItem
           icon={<Settings className="h-4 w-4" />}
           label="Settings"
-          hasSubmenu
+          
           href="/Admin/settings"
           isActive={pathName.includes("/settings")}
           isExpanded={pathName.includes("/settings") }
         >
 
-          <SubMenuItem
-            icon={<User className="h-3 w-3" />}
-            label="Profile"
-            href="/Admin/settings?subSettings=profile"
-            isActive={urlParams.get("subSettings") == "profile"}
-          />
+
         </SidebarItem>
       </nav>
 
