@@ -1,8 +1,16 @@
-import { authOptions } from "@/utils/authOptions";
-import { getServerSession } from "next-auth";
+
+import { Prisma } from "@prisma/client";
 import { serverSideAuth } from "../isAdmin";
 import { prisma } from "@/prisma/prisma";
 
+
+export type PostWithRelations = Prisma.PostGetPayload<{
+  include: {
+    category: true;
+    PostReaction: true;
+    Comment: true;
+  };
+}>;
 
 const getAllPost = async () => {
 

@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 const AdminAllPostLayout = ({children}: {children: ReactNode}) => {
     return (
         <div className="flex items-center h-full">
-            <div className="flex-1">
+            <div className="flex-1 h-full">
             {children}
             </div>
             <PostInformationDisplay/>
