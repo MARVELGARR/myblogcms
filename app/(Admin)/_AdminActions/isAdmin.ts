@@ -19,7 +19,7 @@ export const serverSideAuth = async () => {
     }
 
     const role = session?.user?.role;
-    if (role !== Role.ADMIN) {
+    if (role == Role.ADMIN) {
       redirect("/unauthorized"); // Optional: redirect non-admins
     }
 
