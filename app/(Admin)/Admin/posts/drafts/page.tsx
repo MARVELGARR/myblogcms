@@ -1,7 +1,7 @@
-const PostPage = () => {
+const DraftPae = () => {
     return (
         <div className=""></div>
     );
 }
  
-export default PostPage;
+export default DraftPae;
