@@ -4,11 +4,11 @@ import { useState } from "react"
 import { Filter, Search, Tag, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useFilterStore } from "@/lib/store"
-import PostFilter from "./post-filter"
-
+import { useFilterStore } from "@/zustand/post-filter-store"
+import PostFilter from "./posts-filter"
 export default function FilterTrigger() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
+  
   const { titleFilter, categoryFilter, dateFilter, categories } = useFilterStore()
 
   // Count active filters

@@ -14,6 +14,7 @@ import { useModalStore } from "@/zustand/modal-store";
 import { useState } from "react";
 import useCreateNewCategory from "../_AdminHooks/_AminCategoryHooks/useCreateNewCategoty";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const CreateCategoryModal = () => {
     const [categoryName, setCategoryName] = useState("")
@@ -27,10 +28,13 @@ const CreateCategoryModal = () => {
     onClose();
   };
 
+  const router = useRouter()
+
 
   const handleSubmit = ()=>{
     createCategoty(categoryName).then(()=>{
         toast(`New category created`)
+        router.refresh()
         onClose()
     }).catch(()=>{
         toast("Error creating category")
@@ -61,7 +65,7 @@ const CreateCategoryModal = () => {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button onClick={handleSubmit} type="submit">Save changes</Button>
+            <Button disabled={isCreatingNewCategory} className="cursor-pointer" onClick={handleSubmit} type="submit">Save changes</Button>
           </DialogFooter>
         </DialogContent>
       </form>
