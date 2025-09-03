@@ -1,5 +1,6 @@
 'use client'
 import DeleteCategoryAlert from "@/app/(Admin)/_AdminComponents/delete-category-alert"
+import DeletePostAlert from "@/components/AdminPostComponent/postUI/deletePostAlert"
 import { useEffect, useState } from "react"
 
 
@@ -17,6 +18,7 @@ const MyAlertProvider = () => {
     return (
         <>
         <DeleteCategoryAlert/>
+        <DeletePostAlert/>
         </>
     );
 }

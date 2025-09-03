@@ -5,14 +5,15 @@ import { Button } from "@/components/ui/button";
 import { useAlertStore } from "@/zustand/alert-store"
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const DeleteCategoryAlert = () => {
+const DeletePostAlert = () => {
 
-    const QueryClient = useQueryClient()
+    const router = useRouter()
     const {isOpen, onClose, type, data} = useAlertStore()
 
-    const isAlertOpen = isOpen && type == "Delete-Category" 
+    const isAlertOpen = isOpen && type == "Delete-Post" 
 
     const handleClose = () => {
         onClose()
@@ -20,21 +21,21 @@ const DeleteCategoryAlert = () => {
     
   const handleDelete = async (data: string) => {
     try {
-      const res = await fetch(`/api/category/${data}`, {
+      const res = await fetch(`/api/post/${data}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: data }),
       });
       const result = await res.json();
+      router.refresh()
       if (result.success) {
-        toast("Category deleted");
-        QueryClient.invalidateQueries({queryKey: ["categories"]})
+        toast("Post deleted");
         onClose();
       } else {
-        toast(result.error || "Failed to delete category");
+        toast(result.error || "Failed to delete Post");
       }
     } catch (err) {
-      toast("Error deleting category");
+      toast("Error deleting Post");
     }
   };
 
@@ -45,7 +46,7 @@ const DeleteCategoryAlert = () => {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete this
-            category and remove your data from your servers.
+            post and remove the data from your servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -61,4 +62,4 @@ const DeleteCategoryAlert = () => {
     );
 }
  
-export default DeleteCategoryAlert;
+export default DeletePostAlert;

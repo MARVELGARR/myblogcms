@@ -17,7 +17,7 @@ export function GoogleLoginButton() {
 
   if (session) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 cursor-pointer">
         <div className="text-center">
           <p className="text-sm text-muted-foreground">Signed in as</p>
           <p className="font-medium">{session.user?.email}</p>

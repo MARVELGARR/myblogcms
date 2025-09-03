@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Calendar, User } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useAlertStore } from "@/zustand/alert-store"
 
 // Define the Post type based on typical Prisma Post model
 export type Post = {
@@ -44,11 +45,8 @@ const PostCard = ({
   onDelete,
   className,
 }: PostCardProps) => {
-  const handleDelete = () => {
-    if (onDelete) {
-      onDelete(id)
-    }
-  }
+  const {onOpen} = useAlertStore()
+
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("en-US", {
@@ -89,9 +87,9 @@ const PostCard = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={handleDelete}
+              onClick={()=>onOpen("Delete-Post", id)}
               className={cn(
-                "text-destructive hover:text-destructive hover:bg-destructive/10 p-1 h-8 w-8",
+                "cursor-pointer text-destructive hover:text-destructive hover:bg-destructive/10 p-1 h-8 w-8",
                 image && "text-white hover:text-red-300 hover:bg-white/20 backdrop-blur-sm",
               )}
               title="Delete post"
