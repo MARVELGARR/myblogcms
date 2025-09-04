@@ -61,9 +61,18 @@ const PostCard = ({
     return text.substring(0, maxLength) + "..."
   }
 
+const onClick = (id: string) => {
+  const params = new URLSearchParams(window.location.search)
+  params.set("postId", id)
+  window.history.replaceState({}, "", `${window.location.pathname}?${params}`)
+}
+
+
+
   return (
     <Card
-      className={cn("w-full max-w-md hover:shadow-lg transition-shadow relative overflow-hidden", className)}
+    onClick={()=>onClick(id)}
+      className={cn(" cursor-pointer w-full max-w-md hover:shadow-lg transition-shadow relative overflow-hidden", className)}
       style={
         image
           ? {

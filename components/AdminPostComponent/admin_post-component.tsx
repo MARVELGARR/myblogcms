@@ -69,7 +69,7 @@ const AdminPostComponents = ({ posts }: {posts: PostWithRelations[]}) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPosts?.map((post) => {
-          return <PostCard {...post} />;
+          return <PostCard key={post.id} {...post} />;
         })}
       </div>
       {posts.length === 0 && (

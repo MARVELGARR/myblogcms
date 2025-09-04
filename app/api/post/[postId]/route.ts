@@ -1,5 +1,6 @@
 import { prisma } from "@/prisma/prisma"
 import { NextResponse } from "next/server"
+import { Post } from '../../../../components/AdminPostComponent/postUI/post-card';
 
 
 
@@ -23,5 +24,44 @@ export async function DELETE(requset: Request, { params }: { params: Promise<{ p
     }
     catch(error){
         return NextResponse.json({message: `Failed to delete post: ${error}`}, {status: 500})
+    }
+}
+
+export async function GET(request: Request, { params }: { params: Promise<{ postId: string }> }) {
+    const { postId } = await params
+
+    try {
+        const post = await prisma.post.findUnique({
+            where: { id: postId },
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                        role:true,
+                        
+                    }
+                },
+                PostReaction: true,
+                Comment: {
+                    select: {
+                        id: true,
+                    }
+                },
+                category: {
+                    select: {
+                        name: true,
+                    }
+                },
+
+            }
+        })
+
+        if(!post){
+            return NextResponse.json({})
+        }
+        return NextResponse.json(post)
+    }
+    catch (error) {
+        return NextResponse.json({ message: `Failed to fetch post: ${error}` }, { status: 500 })
     }
 }
