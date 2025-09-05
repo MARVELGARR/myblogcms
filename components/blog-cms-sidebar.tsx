@@ -145,6 +145,12 @@ export function BlogCMSSidebar() {
             isActive={pathName === '/Admin/posts'}
           />
           <SubMenuItem
+            icon={<Edit className="h-3 w-3" />}
+            label="Edit Posts"
+            href="/Admin/posts/editPost"
+            isActive={pathName === '/Admin/posts/editPost'}
+          />
+          <SubMenuItem
             icon={<Plus className="h-3 w-3" />}
             label="Add New"
             href="/Admin/posts/newpost"

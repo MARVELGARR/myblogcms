@@ -65,3 +65,35 @@ export async function GET(request: Request, { params }: { params: Promise<{ post
         return NextResponse.json({ message: `Failed to fetch post: ${error}` }, { status: 500 })
     }
 }
+
+
+export async function PATCH(request: Request, { params }: { params: Promise<{ postId: string }> }) {
+    const { postId } = await params
+    const body = await request.json()
+    const { title, content, category, featured, published, tag } = body
+    try {
+        const updatedPost = await prisma.post.update({
+            where: { id: postId },
+            data: {
+                title,
+                content,
+                category: {
+                    update: {
+                        name: category
+                    }
+                },
+                featured,
+                published,
+                tag,
+            }
+        })
+
+        if(!updatedPost){
+            return NextResponse.json({message: "Post not found"}, {status: 404})
+        }
+        return NextResponse.json(updatedPost)
+    }
+    catch (error) {
+        return NextResponse.json({ message: `Failed to update post: ${error}` }, { status: 500 })
+    }
+}

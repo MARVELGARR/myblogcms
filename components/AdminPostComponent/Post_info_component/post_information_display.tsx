@@ -3,6 +3,7 @@ import useGetPostById from "@/app/(Admin)/_AdminHooks/_AdminPostHooks/useGetPost
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Edit, Eye, EyeOff, Hash, Loader2, Tag, User } from "lucide-react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 const PostInformationDisplay = () => {
@@ -122,9 +123,11 @@ const PostInformationDisplay = () => {
         <div className="pt-4 space-y-2 border-t">
           <h5 className="font-medium text-sm mb-3">Admin Actions</h5>
 
-          <Button onClick={()=>{}} className="w-full" variant="default">
-            <Edit className="h-4 w-4 mr-2" />
-            Edit Post
+          <Button asChild onClick={()=>{}} className="w-full" variant="default">
+            <Link  href={`/Admin/posts/editPost?postId=${postId}`}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit Post
+            </Link>
           </Button>
 
           <Button
