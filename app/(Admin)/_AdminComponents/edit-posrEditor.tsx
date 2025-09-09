@@ -31,7 +31,7 @@ const EditPostEditor = ({ post }: EditorPostProp) => {
     <div className="relative h-full">
       <Plate editor={editor}>
         <EditorContainer className="w-[50rem] h-full" variant="default">
-          <Editor variant="fullWidth" />
+          <Editor  variant="fullWidth" />
         </EditorContainer>
       </Plate>
       <PostDetailsDrawer post={post} />

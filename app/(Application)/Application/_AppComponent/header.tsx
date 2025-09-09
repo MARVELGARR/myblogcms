@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const Header = ({className}: {className?: string}) => {
     return (
-        <div className={cn(className,"w-full flex items-center justify-between px-5")}>
+        <div className={cn(className,"w-full flex items-center justify-center sm:justify-between px-5")}>
             <div className="relative h-[6rem] w-[10rem]">
 
                 <Image
@@ -15,9 +15,9 @@ const Header = ({className}: {className?: string}) => {
                 />
             </div>
 
-            <Navigation/>
+            <Navigation />
 
-            <Button asChild className="">
+            <Button asChild className="hidden sm:block">
                 <a href="#"> subscribe</a>
             </Button>
         </div>

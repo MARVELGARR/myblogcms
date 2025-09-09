@@ -1,6 +1,10 @@
+import ViewingEditor from "@/components/custom/viewingEditor";
+
 const SettingsPage = () => {
     return (
-        <div className=""></div>
+        <div className="">
+            <ViewingEditor/>
+        </div>
     );
 }
  

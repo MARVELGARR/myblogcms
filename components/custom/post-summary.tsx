@@ -8,6 +8,7 @@ import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
 import { PublishButton } from "./publishbutton"
+import DraftButton from "./draft-button"
 
 
 
@@ -81,7 +82,11 @@ export function PostSummary({className}: {className?: string}) {
               <div>Uploaded files: {uploadedFiles.length}</div>
             </div>
           </div>
-          <PublishButton/>
+          <div className="flex flex-col">
+
+            <PublishButton/>
+            <DraftButton />
+          </div>
         </div>
       </CardContent>
     </Card>

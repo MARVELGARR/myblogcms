@@ -44,7 +44,7 @@ label, link, className
 export function Navigation(){
 
     return (
-        <div className="flex gap-2 p-1 bg-secondary border-2 rounded-xl">
+        <div className="sm:flex  hidden  gap-2 p-1 bg-secondary border-2 rounded-xl">
             {navItems.map((item)=>{
                 return (
                     <NavBarItem key={item.link} className="" label={item.label}  link={item.link}/>

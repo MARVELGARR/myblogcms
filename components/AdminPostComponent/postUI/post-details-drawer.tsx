@@ -1,99 +1,190 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { X, Edit, Eye, EyeOff, Calendar, User, Hash, Clock, Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Switch } from "@/components/ui/switch"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose, DrawerTrigger } from "@/components/ui/drawer"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useEditPostStore } from "@/zustand/edit-post-store"
-import { EditorPostProp } from "@/app/(Admin)/_AdminComponents/edit-posrEditor"
-import { EditCategorySelect } from "@/components/custom/editCategorySelector"
-import { useDrawerStore } from "@/zustand/drawer-store"
+import * as React from "react";
+import {
+  X,
+  Edit,
+  Eye,
+  EyeOff,
+  Calendar,
+  User,
+  Hash,
+  Clock,
+  Plus,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerClose,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEditPostStore } from "@/zustand/edit-post-store";
+import { EditorPostProp } from "@/app/(Admin)/_AdminComponents/edit-posrEditor";
+import { EditCategorySelect } from "@/components/custom/editCategorySelector";
+import { useDrawerStore } from "@/zustand/drawer-store";
+import useUpdatePost from "@/app/(Admin)/_AdminHooks/_AdminPostHooks/useUpdatePost";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+
+export function PostDetailsDrawer({ post }: EditorPostProp) {
+
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const {
+    removeTag,
+    markdown,
+    published,
+    category,
+    setFeatured,
+    setPublished,
+    featured,
+    tags,
+    setTags,
+    addTag,
+    description,
+    setDescription,
+    title,
+    setTittle,
+  } = useEditPostStore();
+  const [tagInput, setTagInput] = React.useState("");
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  const { isOpen, type, onClose } = useDrawerStore();
+
+  const { isUpdatingPostById, updatePostById } = useUpdatePost(post.id);
 
 
-export function PostDetailsDrawer({post}:EditorPostProp) {
-
-  const {removeTag, setFeatured, featured, tags, setTags, addTag, description, setDescription, title, setTittle} = useEditPostStore()
-   const [tagInput, setTagInput] = React.useState("")
-  const [isEditing, setIsEditing] = React.useState(false)
-
-  const { isOpen, type, onClose} = useDrawerStore()
-
-  const isDrawerOpen =  isOpen && type == "Edit-post"
-
-
-  const handleClose =() =>{
-    onClose()
+// inside PostDetailsDrawer component
+React.useEffect(() => {
+  if (post) {
+    setTittle(post.title || "")
+    setDescription(post.description || "")
+    setTags(post.tag || [])
+    setFeatured(!!post.featured)
+    setPublished(!!post.published)
+    // hydrate editor markdown with content
+    if (post.content) {
+      // if your zustand store has `setMarkdown` method
+      useEditPostStore.getState().setMarkdown(post.content)
+    }
   }
+}, [post, setTittle, setDescription, setTags, setFeatured, setPublished])
+
+
+  const isDrawerOpen = isOpen && type == "Edit-post";
+
+  const handleClose = () => {
+    onClose();
+  };
 
   const handleEdit = () => {
-    setIsEditing(true)
-  }
+    setIsEditing(true);
+  };
 
-    const handleAddTag = () => {
-    const trimmedTag = tagInput.trim()
+  const handleAddTag = () => {
+    const trimmedTag = tagInput.trim();
     if (trimmedTag && !tags.includes(trimmedTag)) {
-      addTag(trimmedTag)
-      setTagInput("")
+      addTag(trimmedTag);
+      setTagInput("");
     }
-  }
+  };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    removeTag(tagToRemove)
-  }
+    removeTag(tagToRemove);
+  };
 
-    const handleTittleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTittle(e.target.value)
-    }
-    const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setDescription(e.target.value)
-    }
-  
-  
-    const handleFeaturedToggle = (checked: boolean) => {
-      setFeatured(checked)
-    }
+  const handleTittleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTittle(e.target.value);
+  };
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value);
+  };
 
- 
+  const handleFeaturedToggle = (checked: boolean) => {
+    setFeatured(checked);
+  };
 
   const handleTagInputKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      e.preventDefault()
-      handleAddTag()
+      e.preventDefault();
+      handleAddTag();
     }
-  }
-
-  const handleUnpublish = () => {
-   
-  }
-  const handlePublish = () =>{
-
-  }
-
-  const handleSave =()=>{
-
-  }
+  };
 
 
+  const buildData = (publishedOverride?: boolean) => {
+    return {
+      title,
+      description,
+      content: markdown, // make sure content is always saved
+      category,
+      featured,
+      tags,
+      published:
+        typeof publishedOverride === "boolean" ? publishedOverride : published,
+    };
+  };
 
+  const handleSave = async () => {
+    try {
+      await updatePostById(buildData())
+        router.refresh()
+        queryClient.invalidateQueries({queryKey: ["post", post.id]})
+        
+      } catch (error) {
+        console.error("Error saving post:", error);
+      }
+    };
+    
+    const handlePublish = async () => {
+      try {
+        await updatePostById(buildData(true))
+        router.refresh()
+        queryClient.invalidateQueries({queryKey: ["post", post.id]})
+        // force publish
+      } catch (error) {
+        console.error("Error publishing post:", error);
+      }
+    };
+    
+    const handleUnpublish = async () => {
+      try {
+        await updatePostById(buildData(false))
+        router.refresh()
+        queryClient.invalidateQueries({queryKey: ["post", post.id]})
+      // force unpublish
+    } catch (error) {
+      console.error("Error unpublishing post:", error);
+    }
+  };
 
-  const isPublished = !!post.published 
-  const readingTime = Math.ceil(post.content.split(" ").length / 200)
+  const isPublished = !!post.published;
+  const readingTime = Math.ceil(post.content.split(" ").length / 200);
 
   return (
-    <Drawer open={isDrawerOpen} onOpenChange={handleClose} >
-
+    <Drawer open={isDrawerOpen} onOpenChange={handleClose}>
       <DrawerContent className=" ">
         <DrawerHeader className="border-b">
           <div className="flex items-center justify-between">
-            <DrawerTitle className="text-xl font-semibold">{isEditing ? "Edit Post" : "Post Details"}</DrawerTitle>
+            <DrawerTitle className="text-xl font-semibold">
+              {isEditing ? "Edit Post" : "Post Details"}
+            </DrawerTitle>
             <div className="flex items-center gap-2">
               {!isEditing && (
                 <>
-                  <Button variant="outline" size="sm" onClick={handleEdit} className="gap-2 bg-transparent">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleEdit}
+                    className="gap-2 bg-transparent"
+                  >
                     <Edit className="h-4 w-4" />
                     Edit
                   </Button>
@@ -133,17 +224,23 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-medium">Edit Post Metadata</h3>
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => setIsEditing(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsEditing(false)}
+                    >
                       Cancel
                     </Button>
-                    <Button onClick={handleSave}>Save Changes</Button>
+                    <Button disabled={isUpdatingPostById} onClick={handleSave}>Save Changes</Button>
                   </div>
                 </div>
 
                 <div className="space-y-6">
                   {/* Title Section */}
                   <div className="space-y-2">
-                    <label htmlFor="title" className="text-sm font-medium text-foreground">
+                    <label
+                      htmlFor="title"
+                      className="text-sm font-medium text-foreground"
+                    >
                       Title
                     </label>
                     <Input
@@ -158,7 +255,10 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
 
                   {/* Description Section */}
                   <div className="space-y-2">
-                    <label htmlFor="description" className="text-sm font-medium text-foreground">
+                    <label
+                      htmlFor="description"
+                      className="text-sm font-medium text-foreground"
+                    >
                       Description
                     </label>
                     <Input
@@ -172,11 +272,14 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                   </div>
 
                   {/* Category Section */}
-                    <EditCategorySelect/>
+                  <EditCategorySelect />
 
                   {/* Tags Section */}
                   <div className="space-y-2">
-                    <label htmlFor="tags" className="text-sm font-medium text-foreground">
+                    <label
+                      htmlFor="tags"
+                      className="text-sm font-medium text-foreground"
+                    >
                       Tags
                     </label>
                     <div className="flex gap-2">
@@ -192,7 +295,9 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                       <Button
                         type="button"
                         onClick={handleAddTag}
-                        disabled={!tagInput.trim() || tags.includes(tagInput.trim())}
+                        disabled={
+                          !tagInput.trim() || tags.includes(tagInput.trim())
+                        }
                         size="sm"
                         className="shrink-0"
                       >
@@ -205,7 +310,11 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                     {post.tag.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-3">
                         {post.tag.map((tag) => (
-                          <Badge key={tag} variant="secondary" className="flex items-center gap-1 pr-1">
+                          <Badge
+                            key={tag}
+                            variant="secondary"
+                            className="flex items-center gap-1 pr-1"
+                          >
                             <span>{tag}</span>
                             <Button
                               type="button"
@@ -225,10 +334,15 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                   {/* Featured Toggle Section */}
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <label htmlFor="featured" className="text-sm font-medium text-foreground">
+                      <label
+                        htmlFor="featured"
+                        className="text-sm font-medium text-foreground"
+                      >
                         Featured Post
                       </label>
-                      <p className="text-xs text-muted-foreground">Mark this post as featured to highlight it</p>
+                      <p className="text-xs text-muted-foreground">
+                        Mark this post as featured to highlight it
+                      </p>
                     </div>
                     <Switch
                       id="featured"
@@ -248,7 +362,10 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
               </TabsList>
 
               <div className="flex-1 overflow-hidden">
-                <TabsContent value="details" className="h-full overflow-y-auto p-6 mt-0">
+                <TabsContent
+                  value="details"
+                  className="h-full overflow-y-auto p-6 mt-0"
+                >
                   <div className="max-w-2xl mx-auto space-y-6">
                     {/* Post Image */}
                     {post.image && (
@@ -264,11 +381,19 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                     {/* Title and Status */}
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <Badge variant={isPublished ? "default" : "secondary"}>{post.published ? "Published" : "Un-publish"}</Badge>
-                        {post.featured && <Badge variant="outline">Featured</Badge>}
+                        <Badge variant={isPublished ? "default" : "secondary"}>
+                          {post.published ? "Published" : "Un-publish"}
+                        </Badge>
+                        {post.featured && (
+                          <Badge variant="outline">Featured</Badge>
+                        )}
                       </div>
-                      <h1 className="text-2xl font-bold text-balance">{post.title}</h1>
-                      <p className="text-muted-foreground text-pretty">{post.description}</p>
+                      <h1 className="text-2xl font-bold text-balance">
+                        {post.title}
+                      </h1>
+                      <p className="text-muted-foreground text-pretty">
+                        {post.description}
+                      </p>
                     </div>
 
                     {/* Meta Information */}
@@ -281,7 +406,9 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                       <div className="flex items-center gap-2 text-sm">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Created:</span>
-                        <span className="font-medium">{new Date(post.createdAt).toLocaleDateString()}</span>
+                        <span className="font-medium">
+                          {new Date(post.createdAt).toLocaleDateString()}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <Hash className="h-4 w-4 text-muted-foreground" />
@@ -298,17 +425,25 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                     {/* Category and Tags */}
                     <div className="space-y-3">
                       <div>
-                        <span className="text-sm font-medium text-muted-foreground">Category:</span>
+                        <span className="text-sm font-medium text-muted-foreground">
+                          Category:
+                        </span>
                         <Badge variant="outline" className="ml-2">
                           {post.category.name}
                         </Badge>
                       </div>
                       {post.tag && post.tag.length > 0 && (
                         <div>
-                          <span className="text-sm font-medium text-muted-foreground">Tags:</span>
+                          <span className="text-sm font-medium text-muted-foreground">
+                            Tags:
+                          </span>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {post.tag.map((tag) => (
-                              <Badge key={tag} variant="secondary" className="text-xs">
+                              <Badge
+                                key={tag}
+                                variant="secondary"
+                                className="text-xs"
+                              >
                                 {tag}
                               </Badge>
                             ))}
@@ -319,34 +454,54 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="content" className="h-full overflow-y-auto p-6 mt-0">
+                <TabsContent
+                  value="content"
+                  className="h-full overflow-y-auto p-6 mt-0"
+                >
                   <div className="max-w-2xl mx-auto">
                     <h3 className="text-lg font-medium mb-4">Post Content</h3>
                     <div className="prose prose-sm max-w-none">
-                      <p className="text-muted-foreground whitespace-pre-wrap">{post.content}</p>
+                      <p className="text-muted-foreground whitespace-pre-wrap">
+                        {post.content}
+                      </p>
                     </div>
                   </div>
                 </TabsContent>
 
-                <TabsContent value="metadata" className="h-full overflow-y-auto p-6 mt-0">
+                <TabsContent
+                  value="metadata"
+                  className="h-full overflow-y-auto p-6 mt-0"
+                >
                   <div className="max-w-2xl mx-auto space-y-4">
                     <h3 className="text-lg font-medium">Technical Metadata</h3>
                     <div className="space-y-3 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Word Count:</span>
-                        <span className="font-mono">{post.content.split(" ").length}</span>
+                        <span className="text-muted-foreground">
+                          Word Count:
+                        </span>
+                        <span className="font-mono">
+                          {post.content.split(" ").length}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Character Count:</span>
+                        <span className="text-muted-foreground">
+                          Character Count:
+                        </span>
                         <span className="font-mono">{post.content.length}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Last Modified:</span>
-                        <span className="font-mono">{new Date(post.createdAt).toLocaleString()}</span>
+                        <span className="text-muted-foreground">
+                          Last Modified:
+                        </span>
+                        <span className="font-mono">
+                          {new Date(post.createdAt).toLocaleString()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Status:</span>
-                        <Badge variant={isPublished ? "default" : "secondary"}>{post.published ? "Published" : "Un-published"}</Badge>
+                        <Badge variant={isPublished ? "default" : "secondary"}>
+                          {post.published ? "Published" : "Un-published"}
+                        </Badge>
                       </div>
                     </div>
                   </div>
@@ -357,5 +512,5 @@ export function PostDetailsDrawer({post}:EditorPostProp) {
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }

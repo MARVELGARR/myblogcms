@@ -8,6 +8,7 @@ interface EditPostState {
   title: string
   description: string
   featured: boolean
+  published:boolean
 
   // Content
   markdown: string
@@ -31,7 +32,7 @@ interface EditPostState {
   setMarkdown: (markdown: string) => void
   setUploadedFiles: (files: Array<{ url: string; name: string; size: number; type: string }>) => void
   addUploadedFiles: (files: Array<{ url: string; name: string; size: number; type: string }>) => void
-
+  setPublished: (published: boolean) => void
   // Reset function
   resetPost: () => void
 }
@@ -44,6 +45,7 @@ const initialState = {
   featured: false,
   markdown: "",
   uploadedFiles: [],
+  published: false
 }
 
 export const useEditPostStore = create<EditPostState>()(
@@ -75,6 +77,9 @@ export const useEditPostStore = create<EditPostState>()(
 
       // Featured action
       setFeatured: (featured) => set({ featured }, false, "setFeatured"),
+
+      // Published action
+      setPublished: (published) => set({ published }, false, "setPublished"),
 
       // Markdown action
       setMarkdown: (markdown) => set({ markdown }, false, "setMarkdown"),

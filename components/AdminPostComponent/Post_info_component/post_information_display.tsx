@@ -4,11 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Edit, Eye, EyeOff, Hash, Loader2, Tag, User } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const PostInformationDisplay = () => {
   const urlParam = useSearchParams();
   const postId = urlParam.get("postId");
+  const pathName = usePathname()
   const { isLoadingPostDetails, isPostDetailsError, postDetailes } = useGetPostById(postId);
 
   if (!postId) {
@@ -39,6 +40,7 @@ const PostInformationDisplay = () => {
     );
   }
 
+  const showView = pathName.includes("editPost")
 
 
       return (
@@ -91,7 +93,7 @@ const PostInformationDisplay = () => {
 
             <div className="flex items-center gap-2 text-muted-foreground">
               <Tag className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{postDetailes.category?.name}</span>
+              <span className="truncate">{postDetailes.category?.name}ded</span>
             </div>
 
             <div className="flex items-center gap-2 text-muted-foreground">
@@ -148,10 +150,10 @@ const PostInformationDisplay = () => {
             )}
           </Button>
 
-          <Button className="w-full bg-transparent" variant="outline">
+          {showView && (<Button className="w-full bg-transparent" variant="outline">
             <Eye className="h-4 w-4 mr-2" />
             View Full Post
-          </Button>
+          </Button>)}
         </div>
       </div>
         </div>
