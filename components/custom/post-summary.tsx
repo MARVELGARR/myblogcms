@@ -72,7 +72,7 @@ export function PostSummary({className}: {className?: string}) {
         </div>
 
         {/* Content Stats */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between">
 
           <div className="space-y-2">
             <span className="text-sm font-medium">Content:</span>
@@ -82,7 +82,7 @@ export function PostSummary({className}: {className?: string}) {
               <div>Uploaded files: {uploadedFiles.length}</div>
             </div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-3">
 
             <PublishButton/>
             <DraftButton />

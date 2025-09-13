@@ -163,13 +163,13 @@ export function BlogCMSSidebar() {
             isActive={urlParams.get("subPost") == "drafts"}
           />
         </SidebarItem>
-{/* 
+
         <SidebarItem
           icon={<ImageIcon className="h-4 w-4" />}
-          label="Media"
-          href="/Admin/media"
-          isActive={pathName.includes("/media")}
-        /> */}
+          label="reactions"
+          href="/Admin/reactions"
+          isActive={pathName == "/Admin/reactions"}
+        />
 
         {/* <SidebarItem
           

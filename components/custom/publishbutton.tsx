@@ -34,7 +34,7 @@ export function PublishButton() {
   })
 
   return (
-    <Button onClick={() => mutation.mutate()} disabled={mutation.isPending}>
+    <Button className="cursor-pointer" onClick={() => mutation.mutate()} disabled={mutation.isPending}>
       {mutation.isPending ? "Publishing..." : "Publish"}
     </Button>
   )

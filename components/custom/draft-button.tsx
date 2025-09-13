@@ -31,41 +31,44 @@ const DraftButton = () => {
     categoryId: category,
   };
 
-
-  const [draftStorage, setDraftStorage] = useLocalStorage<CreateDraftType>("Post-Draft", {})
+  const [draftStorage, setDraftStorage] = useLocalStorage<CreateDraftType>(
+    "Post-Draft",
+    {}
+  );
 
   const create_draft_mutation = useMutation({
     mutationFn: () => createDraft(draft),
     onSuccess: (data) => {
-        setDraftStorage(data)
+      setDraftStorage(data);
     },
-    onError: (error) => {
-    },
+    onError: (error) => {},
   });
 
-  const draftId = draftStorage.id
+  const draftId = draftStorage.id;
 
   const update_draft_mutation = useMutation({
     mutationFn: () => updateDraft(draft, draftId),
   });
 
-
   return (
     <>
-{!draftId ? (    <Button
-      onClick={() => create_draft_mutation.mutate()}
-      disabled={create_draft_mutation.isPending}
-    >
-      {create_draft_mutation.isPending ? "Drafting..." : "Draft"}
-    </Button>): (
+      {!draftId ? (
         <Button
-      onClick={() => update_draft_mutation.mutate()}
-      disabled={update_draft_mutation.isPending}
-    >
-      {update_draft_mutation.isPending ? "saving..." : "save"}
-    </Button>
-    )}
-
+          className="cursor-pointer"
+          onClick={() => create_draft_mutation.mutate()}
+          disabled={create_draft_mutation.isPending}
+        >
+          {create_draft_mutation.isPending ? "Drafting..." : "Draft"}
+        </Button>
+      ) : (
+        <Button
+          className="cursor-pointer"
+          onClick={() => update_draft_mutation.mutate()}
+          disabled={update_draft_mutation.isPending}
+        >
+          {update_draft_mutation.isPending ? "saving..." : "save"}
+        </Button>
+      )}
     </>
   );
 };

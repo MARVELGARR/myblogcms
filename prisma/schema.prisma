@@ -32,6 +32,8 @@ model User {
   Comment Comment[]
 
   Draft Draft[]
+
+  Rating Rating[]
 }
 
 model Account {
@@ -118,6 +120,7 @@ model Post {
   category   Category @relation(fields: [categoryId], references: [id])
 
   @@index([authorId])
+  Rating Rating[]
 }
 
 model Category {
@@ -151,7 +154,7 @@ model Draft {
   description String?
   image       String?
   tag         String[]
-  categoryId  String    @db.ObjectId
+  categoryId  String?    @db.ObjectId
   category    Category? @relation(fields: [categoryId], references: [id])
   authorId    String    @db.ObjectId
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
@@ -167,6 +170,7 @@ model PostReaction {
   reactionId String @db.ObjectId
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reaction Reaction @relation(fields: [reactionId], references: [id])
 }
 
 model Reaction {
@@ -174,4 +178,18 @@ model Reaction {
   react     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  PostReaction PostReaction[]
+}
+
+model Rating{
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  count Int?
+
+  postId  String  @db.ObjectId
+  post Post @relation(fields: [postId], references: [id])
+
+  userId String @db.ObjectId
+  user User @relation(fields: [userId], references: [id])
+
 }

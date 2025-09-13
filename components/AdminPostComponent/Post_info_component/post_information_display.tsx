@@ -1,24 +1,44 @@
-'use client'
+"use client";
 import useGetPostById from "@/app/(Admin)/_AdminHooks/_AdminPostHooks/useGetPostById";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Edit, Eye, EyeOff, Hash, Loader2, Tag, User } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Edit,
+  Eye,
+  EyeOff,
+  Hash,
+  Loader2,
+  Tag,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
 const PostInformationDisplay = () => {
   const urlParam = useSearchParams();
   const postId = urlParam.get("postId");
-  const pathName = usePathname()
-  const { isLoadingPostDetails, isPostDetailsError, postDetailes } = useGetPostById(postId);
+  const pathName = usePathname();
+  const { isLoadingPostDetails, isPostDetailsError, postDetailes } =
+    useGetPostById(postId);
+  const showView = pathName.includes("editPost");
 
   if (!postId) {
-    return <div className="shadow-2xl w-[20rem] drop-shadow-md h-full shadow-background"></div>;
+    return (
+      <div className="w-80 border-l bg-muted/20 p-6 flex items-center justify-center">
+        <div className="text-center text-muted-foreground">
+          <div className="mb-2 text-4xl">📄</div>
+          <p className="text-sm">Select a post to view details</p>
+        </div>
+      </div>
+    );
   }
 
-
   if (isPostDetailsError) {
-    return <div className="shadow-2xl w-[20rem] drop-shadow-md h-full shadow-background" ></div>;
+    return (
+      <div className="shadow-2xl w-[20rem] drop-shadow-md h-full shadow-background"></div>
+    );
   }
 
   if (isLoadingPostDetails) {
@@ -40,15 +60,14 @@ const PostInformationDisplay = () => {
     );
   }
 
-  const showView = pathName.includes("editPost")
-
-
-      return (
-        <div className="shadow-2xl w-[20rem] drop-shadow-md h-full shadow-background">
-                <div className="p-4 space-y-4 max-h-[calc(100vh-80px)] overflow-y-auto">
+  return (
+    <div className="shadow-2xl w-[20rem] drop-shadow-md h-full shadow-background">
+      <div className="p-4 space-y-4 max-h-[calc(100vh-80px)] overflow-y-auto">
         <div>
-          <h4 className="font-semibold text-lg mb-2 leading-tight">{postDetailes.title}</h4>
-          <Badge variant={postDetailes.published  ? "default" : "secondary"}>
+          <h4 className="font-semibold text-lg mb-2 leading-tight">
+            {postDetailes.title}
+          </h4>
+          <Badge variant={postDetailes.published ? "default" : "secondary"}>
             {postDetailes.published ? (
               <Eye className="h-3 w-3 mr-1" />
             ) : (
@@ -103,7 +122,10 @@ const PostInformationDisplay = () => {
 
             <div className="flex items-center gap-2 text-muted-foreground">
               <Clock className="h-4 w-4 flex-shrink-0" />
-              <span>~{Math.ceil(postDetailes.content.split(" ").length / 200)} min read</span>
+              <span>
+                ~{Math.ceil(postDetailes.content.split(" ").length / 200)} min
+                read
+              </span>
             </div>
           </div>
         </div>
@@ -111,7 +133,9 @@ const PostInformationDisplay = () => {
         <div>
           <div className="flex items-center justify-between mb-2">
             <h5 className="font-medium">Content Preview</h5>
-            <span className="text-xs text-muted-foreground">{postDetailes.content.split(" ").length} words</span>
+            <span className="text-xs text-muted-foreground">
+              {postDetailes.content.split(" ").length} words
+            </span>
           </div>
           <div className="bg-muted/20 p-3 rounded-lg max-h-32 overflow-y-auto">
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -125,15 +149,20 @@ const PostInformationDisplay = () => {
         <div className="pt-4 space-y-2 border-t">
           <h5 className="font-medium text-sm mb-3">Admin Actions</h5>
 
-          <Button asChild onClick={()=>{}} className="w-full" variant="default">
-            <Link  href={`/Admin/posts/editPost?postId=${postId}`}>
-                <Edit className="h-4 w-4 mr-2" />
-                Edit Post
+          <Button
+            asChild
+            onClick={() => {}}
+            className="w-full"
+            variant="default"
+          >
+            <Link href={`/Admin/posts/editPost?postId=${postId}`}>
+              <Edit className="h-4 w-4 mr-2" />
+              Edit Post
             </Link>
           </Button>
 
           <Button
-            onClick={()=>{}}
+            onClick={() => {}}
             className="w-full"
             variant={postDetailes.published ? "destructive" : "default"}
           >
@@ -150,16 +179,16 @@ const PostInformationDisplay = () => {
             )}
           </Button>
 
-          {showView && (<Button className="w-full bg-transparent" variant="outline">
-            <Eye className="h-4 w-4 mr-2" />
-            View Full Post
-          </Button>)}
+          {showView && (
+            <Button className="w-full bg-transparent" variant="outline">
+              <Eye className="h-4 w-4 mr-2" />
+              View Full Post
+            </Button>
+          )}
         </div>
       </div>
-        </div>
-      );
-  
-
+    </div>
+  );
 };
 
 export default PostInformationDisplay;
