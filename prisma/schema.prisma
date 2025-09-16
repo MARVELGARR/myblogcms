@@ -34,6 +34,8 @@ model User {
   Draft Draft[]
 
   Rating Rating[]
+
+  Subscription Subscription[]
 }
 
 model Account {
@@ -192,4 +194,13 @@ model Rating{
   userId String @db.ObjectId
   user User @relation(fields: [userId], references: [id])
 
+}
+
+model Subscription{
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  email String 
+  
+    userId String? @db.ObjectId
+  user User? @relation(fields: [userId], references: [id])
 }

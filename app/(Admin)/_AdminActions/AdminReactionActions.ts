@@ -14,7 +14,7 @@ export const createReaction = async (data: ReactionCreationType["react"]) : Prom
             body: JSON.stringify(data)
         })
 
-        if(!res){
+        if(!res.ok){
             console.error('failed to create reaction')
         }
         const reaction = await res.json()
@@ -22,7 +22,7 @@ export const createReaction = async (data: ReactionCreationType["react"]) : Prom
     }
     catch(error){
         console.error(error)
-        throw Error("something went wrong")
+        throw new Error("something went wrong")
     }
 }
 
@@ -35,7 +35,7 @@ export const deleteReaction = async (reactionId: string) => {
                 "Content-type" : "application/json"
             }
         })
-        if(!res){
+        if(!res.ok){
             console.error('failed to create reaction')
         }
         const result = await res.json()
@@ -43,7 +43,7 @@ export const deleteReaction = async (reactionId: string) => {
     }
     catch(error){
          console.error(error)
-        throw Error("something went wrong")
+        throw new Error("something went wrong")
     }
 
 }

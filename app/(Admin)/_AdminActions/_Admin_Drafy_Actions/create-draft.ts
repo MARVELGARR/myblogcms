@@ -22,7 +22,7 @@ export const createDraft = async (body: CreateDraftType) : Promise<CreateDraftTy
     }
     catch(error){
         console.error(error)
-        throw new Error(`${error}`)
+        throw new Error("somthing went wrong")
     }
     
 }

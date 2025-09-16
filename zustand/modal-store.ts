@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type modalType = "CATEGORY" | "POST" | "PAGE" | "USER" | null;
+type modalType = "CATEGORY" | "SUBSCRIPTION" | "POST" | "PAGE" | "USER" | null;
 
 type ModalStore = {
     type: modalType;

@@ -1,10 +1,13 @@
+
 import Image from "next/image";
 import { Navigation } from "./navigation";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import MobileNavigation from "@/components/custom/mobile-navigation";
+import SubscribeButton from "./subscribe-button";
 
 const Header = ({ className }: { className?: string }) => {
+
+  
   return (
     <div className={cn(
           className, 'flex items-center px-4')}>
@@ -19,9 +22,7 @@ const Header = ({ className }: { className?: string }) => {
         </div>
         <Navigation />
 
-        <Button asChild className="hidden sm:block">
-          <a href="#"> subscribe</a>
-        </Button>
+       <SubscribeButton/>
       </div>
     </div>
   );

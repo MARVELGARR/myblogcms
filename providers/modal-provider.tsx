@@ -1,5 +1,6 @@
 'use client'
 import CreateCategoryModal from "@/app/(Admin)/_AdminComponents/createCategoryModal"
+import SubscriptionModal from "@/components/custom/subascription-modal"
 import { useEffect, useState } from "react"
 
 
@@ -17,6 +18,7 @@ const MyModalProviders = () => {
     return (
         <>
             <CreateCategoryModal/>
+            <SubscriptionModal/>
         </>
     );
 }
