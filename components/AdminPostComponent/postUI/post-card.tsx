@@ -117,7 +117,7 @@ const onClick = (id: string) => {
         {category && (
           <Badge
             variant="outline"
-            className={cn("mt-3", image && "bg-white/20 text-white border-white/30 backdrop-blur-sm")}
+            className={cn("mt-3", image && "bg-white/20 truncate text-white border-white/30 backdrop-blur-sm")}
           >
             {category.name}
           </Badge>

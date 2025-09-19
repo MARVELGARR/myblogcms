@@ -4,23 +4,24 @@ import { Button } from "@/components/ui/button";
 import { useModalStore } from "@/zustand/modal-store";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const SubscribeButton = () => {
   const router = useRouter();
   const session = useSession({
     required: true,
     onUnauthenticated() {
-      router.prefetch("/Auth/login");
+      router.push("/Auth/login");
     },
   }).data;
 
   const { onOpen } = useModalStore();
     const handleSubscribe = async () => {
     try {
-      const result = await onSubscribe(session.user.email);
-      console.log("Subscribed successfully:", result);
+      await onSubscribe(session.user.email);
+      toast(`Thank you for subscribing`)
     } catch (error) {
-      console.error("Subscription failed:", error.message);
+        toast("Subscription failed")
     }
   };
 
