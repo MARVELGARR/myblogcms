@@ -1,5 +1,5 @@
+import { deleteUser, getUsers, updateUserRole } from "@/actions/user-actions"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { getUsers, deleteUser, updateUserRole } from "@/lib/actions/user-actions"
 
 export const useGetUsers = () => {
   const {

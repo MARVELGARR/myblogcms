@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type AlertType = "Delete-Category" |"Delete-Post" | null
+type AlertType = "Delete-Category" | "DELETE_USER" |"Delete-Post" | null
 
 type useAlertStoreProp = {
     type: AlertType
