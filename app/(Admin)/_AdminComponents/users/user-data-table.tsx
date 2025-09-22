@@ -37,7 +37,6 @@ export function UserDataTable<TData, TValue>({ columns, data }: DataTableProps<T
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
-  const { onOpen } = useModalStore()
 
   const table = useReactTable({
     data,
@@ -97,10 +96,7 @@ export function UserDataTable<TData, TValue>({ columns, data }: DataTableProps<T
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button onClick={() => onOpen("CREATE_USER")}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add User
-          </Button>
+         
         </div>
       </div>
       <div className="rounded-md border">
