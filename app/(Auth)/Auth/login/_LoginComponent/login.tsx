@@ -26,6 +26,8 @@ export function GoogleLoginButton() {
               src={session.user.image || "/placeholder.svg"}
               alt="Profile"
               className="w-12 h-12 rounded-full mx-auto mt-2"
+              width={120}
+              height={120}
             />
           )}
         </div>
