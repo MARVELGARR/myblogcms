@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertCircle } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function Error({
   error,
@@ -12,11 +13,8 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error)
-  }, [error])
 
+    const router = useRouter()
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
@@ -31,10 +29,14 @@ export default function Error({
           {error.digest && <p className="text-center text-sm text-muted-foreground">Error ID: {error.digest}</p>}
         </CardContent>
         <CardFooter className="flex flex-col gap-2 sm:flex-row justify-center">
-          <Button onClick={reset} className="">
+          <Button onClick={()=>{
+            reset()
+            router.refresh()
+          }
+        } className=" cursor-pointer">
             Try again
           </Button>
-          <Button variant="outline" onClick={() => (window.location.href = "/")} className="">
+          <Button variant="outline" onClick={() => (window.location.href = "/")} className="cursor-pointer">
             Go home
           </Button>
         </CardFooter>
